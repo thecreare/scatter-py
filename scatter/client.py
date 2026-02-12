@@ -11,6 +11,7 @@ from .gateway import Gateway
 from .http import HTTPClient
 from .models import (
     Channel,
+    ChannelCategory,
     CustomEmoji,
     Invite,
     Member,
@@ -258,7 +259,12 @@ class Client:
         return [Space.from_dict(s) for s in data]
 
     async def fetch_space(self, space_id: str) -> Space:
-        """Fetch a single space by ID (includes channels, members, roles)."""
+        """Fetch a single space by ID.
+
+        Sub-resources (channels, members, roles, categories, emojis) are
+        not included. Use :meth:`fetch_channels`, :meth:`fetch_members`,
+        etc. to load them on demand.
+        """
         data = await self.http.get_space(space_id)
         return Space.from_dict(data)
 
@@ -276,6 +282,11 @@ class Client:
         """Fetch all roles in a space."""
         data = await self.http.get_roles(space_id)
         return [Role.from_dict(r) for r in data]
+
+    async def fetch_categories(self, space_id: str) -> list[ChannelCategory]:
+        """Fetch all channel categories in a space."""
+        data = await self.http.get_categories(space_id)
+        return [ChannelCategory.from_dict(c) for c in data]
 
     async def fetch_messages(
         self,

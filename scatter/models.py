@@ -303,14 +303,19 @@ class Space:
     icon_url: Optional[str] = None
     owner_id: Optional[str] = None
     is_public: bool = False
-    channels: list[Channel] = field(default_factory=list)
-    members: list[Member] = field(default_factory=list)
-    roles: list[Role] = field(default_factory=list)
-    categories: list[ChannelCategory] = field(default_factory=list)
-    custom_emojis: list[CustomEmoji] = field(default_factory=list)
+    channels: Optional[list[Channel]] = None
+    members: Optional[list[Member]] = None
+    roles: Optional[list[Role]] = None
+    categories: Optional[list[ChannelCategory]] = None
+    custom_emojis: Optional[list[CustomEmoji]] = None
 
     @classmethod
     def from_dict(cls, d: dict) -> Space:
+        channels = d.get("channels")
+        members = d.get("members")
+        roles = d.get("roles")
+        categories = d.get("categories")
+        custom_emojis = d.get("custom_emojis")
         return cls(
             id=d["id"],
             name=d["name"],
@@ -318,21 +323,11 @@ class Space:
             icon_url=d.get("icon_url"),
             owner_id=d.get("owner_id"),
             is_public=d.get("is_public", False),
-            channels=[
-                Channel.from_dict(c) for c in d.get("channels", [])
-            ],
-            members=[
-                Member.from_dict(m) for m in d.get("members", [])
-            ],
-            roles=[Role.from_dict(r) for r in d.get("roles", [])],
-            categories=[
-                ChannelCategory.from_dict(c)
-                for c in d.get("categories", [])
-            ],
-            custom_emojis=[
-                CustomEmoji.from_dict(e)
-                for e in d.get("custom_emojis", [])
-            ],
+            channels=[Channel.from_dict(c) for c in channels] if channels is not None else None,
+            members=[Member.from_dict(m) for m in members] if members is not None else None,
+            roles=[Role.from_dict(r) for r in roles] if roles is not None else None,
+            categories=[ChannelCategory.from_dict(c) for c in categories] if categories is not None else None,
+            custom_emojis=[CustomEmoji.from_dict(e) for e in custom_emojis] if custom_emojis is not None else None,
         )
 
 

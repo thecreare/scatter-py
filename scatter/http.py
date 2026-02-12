@@ -294,6 +294,11 @@ class HTTPClient:
     async def get_invites(self, space_id: str) -> list[dict]:
         return await self.request("GET", f"/spaces/{space_id}/invites")
 
+    # ── Categories ───────────────────────────────────────────────
+
+    async def get_categories(self, space_id: str) -> list[dict]:
+        return await self.request("GET", f"/spaces/{space_id}/categories")
+
     # ── Emojis ──────────────────────────────────────────────────
 
     async def get_emojis(self, space_id: str) -> list[dict]:

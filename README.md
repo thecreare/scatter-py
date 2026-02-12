@@ -141,6 +141,7 @@ space = await client.fetch_space(space_id)
 channels = await client.fetch_channels(space_id)
 members = await client.fetch_members(space_id)
 roles = await client.fetch_roles(space_id)
+categories = await client.fetch_categories(space_id)
 emojis = await client.fetch_emojis(space_id)
 ```
 
@@ -214,7 +215,7 @@ All models are dataclasses with `from_dict()` class methods:
 - **`Message`**: `id`, `channel_id`, `content`, `author` (User), `space_id`, `embeds`, `attachments`, `reactions`, `created_at`, `edited_at`, `reply_to`
 - **`User`**: `id`, `username`, `display_name`, `avatar_url`, `presence`, `subscription_tier`
 - **`Member`**: same as User plus `roles` (list of MemberRoleInfo) and `joined_at`
-- **`Space`**: `id`, `name`, `description`, `icon_url`, `owner_id`, `channels`, `members`, `roles`, `categories`, `custom_emojis`
+- **`Space`**: `id`, `name`, `description`, `icon_url`, `owner_id`, `is_public`. Optional lazy-loaded fields (default `None`): `channels`, `members`, `roles`, `categories`, `custom_emojis` — use `fetch_channels()`, `fetch_members()`, etc. to load these
 - **`Channel`**: `id`, `space_id`, `name`, `channel_type`, `topic`, `position`, `category_id`
 - **`Role`**: `id`, `space_id`, `name`, `color`, `position`, `permissions`, `hoist`, `is_default`, `inherits_from`
 - **`Attachment`**: `id`, `filename`, `content_type`, `size_bytes`, `url`, `width`, `height`
